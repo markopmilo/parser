@@ -58,9 +58,9 @@ def load_excel_data(file_name, fields):
     idToName = dict(zip(df['orcid'], df['author'])) # assuming one-to-one relationship, I presume this would change, fine for now
 
     if not fields.get("orcid"):
-        fields['orcid'] = nameToId.get(fields.get("author"))
+        fields['orcid'] = nameToId.get(fields.get("author")) or ''
     if not fields.get("author"):
-        fields['author'] = idToName.get(fields.get("orcid"))
+        fields['author'] = idToName.get(fields.get("orcid")) or ''
 
 
 def format_bibtex(entry_key, fields):
