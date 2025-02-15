@@ -54,12 +54,13 @@ class BibTexParser(Parser):
 
 def load_excel_data(file_name, fields):
     df = pd.read_excel(file_name)  # reads data from file
-    mapping = next(zip(df['author'], df['orcid']))  # make tuple of author orcid data
-    # fill in missing field
-    if fields['orcid'] == "":
-        fields['orcid'] = mapping[1]
-    if fields['author'] == "":
-        fields['author'] = mapping[0]
+    nameToId = dict(zip(df['author'], df['orcid']))
+    idToName = dict(zip(df['orcid'], df['author'])) # assuming one-to-one relationship, I presume this would change, fine for now
+
+    if not fields.get("orcid"):
+        fields['orcid'] = nameToId.get(fields.get("author"))
+    if not fields.get("author"):
+        fields['author'] = idToName.get(fields.get("orcid"))
 
 
 def format_bibtex(entry_key, fields):
